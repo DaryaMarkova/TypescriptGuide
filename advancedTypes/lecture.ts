@@ -232,3 +232,18 @@ const admin: IAdmin = userToAdmin(myUser);
 function isMyString(x: string | number): x is string {
   return typeof x === "string";
 }
+
+function isAdmin(user: ICustomUser | IAdmin): user is IAdmin {
+  // return "role" in user;
+  return (user as IAdmin).role !== undefined;
+}
+
+/* Asserts */
+
+function assertUser(object: unknown): asserts object is ICustomUser {
+  if (typeof object === "object" && !!object && "name" in object) {
+    return;
+  }
+
+  throw new Error("Не пользователь");
+}
