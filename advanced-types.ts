@@ -114,3 +114,121 @@ function getServerDataResponse(
     body: JSON.stringify(params),
   }).then((response) => response.json());
 }
+
+/* void */
+function multiply(f: number, s?: number): number | void {
+  if (!s) {
+    return f * f;
+  }
+}
+
+/* unknown */
+let input: unknown;
+input = 3;
+input = ["sf", "sdf"];
+
+let res: string = input as string; // требуется явное приведение типа
+
+/* never */
+
+// данные функции никогда ничего не возвращают, потому им используется возвратный тип never
+function generateError(message: string): never {
+  throw new Error(message);
+}
+
+function dumpError(): never {
+  while (true) {}
+}
+
+function rec(): never {
+  return rec();
+}
+
+// обеспечение  механизма отладки ошибки на уровне компиляции
+type PaymentAction = "refund" | "checkout"; // | "reject";
+
+function processAction(action: PaymentAction) {
+  switch (action) {
+    case "refund":
+      //...
+      break;
+    case "checkout":
+      //...
+      break;
+    default:
+      const _: never = action;
+      throw new Error("Нет такого action");
+  }
+}
+
+function isString(x: string | number): boolean {
+  if (typeof x === "string") {
+    return true;
+  } else if (typeof x === "number") {
+    return false;
+  }
+
+  generateError("Error");
+}
+
+/* null */
+/* осознанное отсутсвие значения / ссылки */
+const n: null = null;
+const n1: any = null;
+/* const n2: string = null */ // strictNullChecks = true
+
+interface ICustomUser {
+  name: string;
+}
+
+function getUser(): ICustomUser | null {
+  if (Math.random() > 0.5) {
+    return null;
+  } else {
+    return { name: "Вася" } as ICustomUser;
+  }
+}
+
+const customUser = getUser();
+const n55 = customUser?.name;
+
+/* Приведение типов */
+let a = 5;
+let b: string = a.toString();
+let e: string = new String(a).valueOf(); // осторожно
+let f: boolean = new Boolean(a).valueOf(); // осторожно
+
+let c = "cdfs";
+let d: number = parseInt(c, 10);
+
+interface ICustomUser {
+  name: string;
+  email: string;
+  login: string;
+}
+
+const myUser: ICustomUser = {
+  name: "Вася",
+  email: "vasily@yandex.ru",
+  login: "vasia",
+}; // as ICustomUser;
+
+interface IAdmin {
+  name: string;
+  role: number;
+}
+
+// функция-маппинга
+function userToAdmin(user: ICustomUser): IAdmin {
+  return {
+    name: user.name,
+    role: 1,
+  };
+}
+
+const admin: IAdmin = userToAdmin(myUser);
+
+/* Type Guard */
+function isMyString(x: string | number): x is string {
+  return typeof x === "string";
+}
