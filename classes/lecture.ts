@@ -73,3 +73,22 @@ class UserBuilder {
 const resUser = new UserBuilder().setName("Вася");
 
 /* Абстрактные классы */
+abstract class Controller {
+  abstract handle(request: any): void;
+
+  handleWithLogs(request: any) {
+    console.log("Start");
+    this.handle(request);
+    console.log("End");
+  }
+}
+
+class UserController extends Controller {
+  handle(request: any) {
+    console.log(request);
+  }
+}
+
+// пользовательские классы
+const controller = new UserController();
+controller.handleWithLogs("Request");

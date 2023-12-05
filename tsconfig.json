@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "sourceMap": true,
+    "target": "ES2016",
+    "lib": ["DOM", "ES2016"],
+    "module": "CommonJS"
+    /*"root": "./src" */
+    /* "baseUrl": "./" */
+    /*"paths": {
+      "@lib": ["./lib/my-lib"]
+    } */
+  },
+  "strict": true,
+  "include": ["app*"], // включить файлы для компиляции, название которых содержит app
+  "exclude": ["app.ts"]
+  /*"extends": "./" наследование от родительского конфига */
+}

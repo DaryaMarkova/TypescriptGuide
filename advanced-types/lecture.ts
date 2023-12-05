@@ -239,7 +239,6 @@ function isAdmin(user: ICustomUser | IAdmin): user is IAdmin {
 }
 
 /* Asserts */
-
 function assertUser(object: unknown): asserts object is ICustomUser {
   if (typeof object === "object" && !!object && "name" in object) {
     return;
