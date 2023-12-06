@@ -72,3 +72,55 @@ function logId<T extends string | number, Y>(
   console.log(id);
   return { id, data: additionalData };
 }
+
+class Resp<D, E> {
+  data?: D;
+  error?: E;
+
+  constructor(data?: D, error?: E) {}
+}
+
+const response = new Resp<string, number>("data");
+
+class HTTPResp<F> extends Resp<string, number> {
+  code: F;
+
+  setCode(code: F) {
+    this.code = code;
+  }
+}
+
+const res2 = new HTTPResp<number>("Darya", 4);
+res2.setCode(7);
+
+/* Миксины */
+
+type GConstructor<T = {}> = new (...args: any[]) => T;
+
+class List {
+  constructor(public items: string[]) {}
+}
+
+class Accordion {
+  isOpened: boolean;
+}
+
+type ListType = GConstructor<List>;
+type AccordionType = GConstructor<Accordion>;
+
+function ExtendedList<TBase extends ListType>(Base: TBase) {
+  return class ExtendedList extends Base {
+    first() {
+      this.items[0];
+    }
+  };
+}
+
+class AccordionList {
+  isOpened: boolean;
+  constructor(public items: string[]) {}
+}
+
+const list = ExtendedList(AccordionList);
+const resList = new list(["first", "second"]);
+console.log(resList.first());
