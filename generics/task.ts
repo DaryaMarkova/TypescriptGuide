@@ -6,3 +6,6 @@ function sort<T extends { id: number }>(
     order === "asc" ? item1.id - item2.id : item2.id - item1.id
   );
 }
+function run1<A, B>() {}
+
+function run2<A, B extends A>() {}
