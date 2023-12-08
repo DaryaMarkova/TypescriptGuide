@@ -64,3 +64,10 @@ function getUser(dbIdOrId: string | number): UserX | UserPersistend {
     return new UserPersistend();
   }
 }
+
+/* Infer */
+
+// псевдообъявление типа
+type GetFirstArg<T> = T extends (first: infer First, ...args: any[]) => any
+  ? First
+  : never;
