@@ -72,7 +72,21 @@ type GetFirstArg<T> = T extends (first: infer First, ...args: any[]) => any
   ? First
   : never;
 
-const formValidation = {
-  name: { isValid: true },
-  password: { isValid: false, errorMessage: "Должен быть длиннее 5 символов" },
+type ErrorData = {
+  errorOrCode: number | string;
+  payload?: Record<string, string | number | boolean>;
 };
+
+const errorData = {
+  errorOrCode: "TIMEOUTERROR",
+  payload: {
+    userId: 1,
+  },
+} satisfies ErrorData;
+
+const testPayload = errorData.payload.userId.toFixed(2);
+
+// Number.isNan()
+type ReadOrWrite = "read" | "write";
+type Access = `can${Capitalize<ReadOrWrite>}`;
+type ReadOrWriteBulk<T> = T extends `can${infer R}` ? R : never;
