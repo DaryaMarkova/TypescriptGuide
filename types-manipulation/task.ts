@@ -20,3 +20,25 @@ function groupByKey<T extends Record<string, string | number | object>>(
     return result;
   }, {});
 }
+
+/* Написать тип для валидационной формы */
+const formValidation: Validation<{ name: ""; password: "" }> = {
+  name: { isValid: true },
+  password: { isValid: false, errorMessage: "Должен быть длиннее 5 символов" },
+};
+
+type ValidationType = Record<
+  string,
+  { isValid: boolean; errorMessage?: string }
+>;
+
+type Validation<T> = {
+  [K in keyof T]:
+    | {
+        isValid: true;
+      }
+    | {
+        isValid: false;
+        errorMessage: string;
+      };
+};

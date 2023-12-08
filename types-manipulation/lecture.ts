@@ -71,3 +71,8 @@ function getUser(dbIdOrId: string | number): UserX | UserPersistend {
 type GetFirstArg<T> = T extends (first: infer First, ...args: any[]) => any
   ? First
   : never;
+
+const formValidation = {
+  name: { isValid: true },
+  password: { isValid: false, errorMessage: "Должен быть длиннее 5 символов" },
+};
