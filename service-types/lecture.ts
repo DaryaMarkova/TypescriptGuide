@@ -29,4 +29,4 @@ const readonlyUser: UserReadonly = {
   email: "darya.markova.95@mail.ru",
 };
 
-// readonlyUser.age = 32;
+// can not be changed readonlyUser.age = 32;
