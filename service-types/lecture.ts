@@ -37,6 +37,40 @@ interface PaymentPersistent {
   from: string;
   to: string;
 }
+
 type PaymentOmit = Omit<PaymentPersistent, "id">;
 type PaymentPick = Pick<PaymentPersistent, "from" | "to">;
 type ExtractEx = Extract<"from" | "to" | PaymentOmit, string>;
+
+class ICustomUser {
+  constructor(public id: number, public name: string) {}
+}
+
+function getData(id: number): ICustomUser {
+  return new ICustomUser(id, "Вася");
+}
+
+type UserReturnType = ReturnType<typeof getData>;
+
+type UserParametersType = Parameters<typeof getData>; // {id: number } и т.п.
+type CP = ConstructorParameters<typeof ICustomUser>;
+
+/* Awaited */
+
+type A = Awaited<Promise<String>>;
+type A2 = Awaited<Promise<Promise<string>>>;
+
+interface IMenu {
+  name: string;
+  url: string;
+}
+
+async function getMenu(): Promise<IMenu[]> {
+  return [{ name: "Аналитика", url: "analytics" }];
+}
+
+type getMenuType = Awaited<ReturnType<typeof getMenu>>;
+
+async function getArray<T>(x: T): Promise<T[]> {
+  return [await x];
+}
