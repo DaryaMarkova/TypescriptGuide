@@ -30,3 +30,13 @@ const readonlyUser: UserReadonly = {
 };
 
 // can not be changed readonlyUser.age = 32;
+
+interface PaymentPersistent {
+  id: number;
+  sum: number;
+  from: string;
+  to: string;
+}
+type PaymentOmit = Omit<PaymentPersistent, "id">;
+type PaymentPick = Pick<PaymentPersistent, "from" | "to">;
+type ExtractEx = Extract<"from" | "to" | PaymentOmit, string>;
