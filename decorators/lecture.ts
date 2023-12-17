@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 interface IUserService {
   usersCount: number;
   getUsersInDatabase(): number;
@@ -77,3 +79,65 @@ function Max(max: number) {
 }
 
 console.log("users count", new UserService().getUsersInDatabase());
+
+// также можно писать декоратор на геттеры и сеттеры
+function accessorDecorator() {
+  return (
+    target: Object,
+    propertyKey: string | symbol,
+    descriptor: PropertyDescriptor
+  ) => {
+    const set = descriptor.set;
+
+    descriptor.set = (...args: any) => {
+      console.log(args);
+      set?.apply(target, args);
+    };
+  };
+}
+
+/* Декоратор параметров @Positive */
+function parametrDecorator() {
+  return (
+    target: Object /* объект, к которому применяется декоратор */,
+    propertyKey: string | symbol /* название свойсива */,
+    parametrIndex: number /* индекс параметра в общем списке параметров (позиция вызова параметра) */
+  ) => {};
+}
+/* Мета-данные */
+
+const POSITIVE_METADATA_KEY = Symbol("POSITIVE_METADATA_KEY");
+
+/* Порядок декораторов */
+function ValidatePositive() {
+  return (
+    target: Object /* объект, к которому применяется декоратор */,
+    propertyKey: string | symbol /* название свойсива */,
+    descriptor: TypedPropertyDescriptor<(...args: any[]) => any>
+  ) => {
+    /* индекс параметра в общем списке параметров (позиция вызова параметра) */
+    let method = descriptor.value;
+
+    descriptor.value = function (...args: any) {
+      let positiveParams: number[] =
+        Reflect.getOwnMetadata(POSITIVE_METADATA_KEY, target, propertyKey) ||
+        [];
+
+      if (positiveParams) {
+        for (let index of positiveParams) {
+          if (args[index] < 0) {
+            throw new Error("Число должно быть больше нуля");
+          }
+        }
+      }
+
+      return method?.apply(this, args);
+    };
+  };
+}
+
+// Полезная статья для прочтения
+// из документации
+// https://www.typescriptlang.org/docs/handbook/decorators.html
+// Про декораторы и работу библиотеки Reflect-metadata
+// https://habr.com/ru/articles/494668/

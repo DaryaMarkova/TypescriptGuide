@@ -30,3 +30,24 @@ function catchError({ rethrow: boolean } = { rethrow: true }) {
 
 // пример использования
 // @catchError({ rethrow: true })
+class Flight<T> {
+  constructor(private dest: T[]) {}
+
+  @test
+  fly(to: T) {}
+}
+
+function test<This, Args extends any[], ReturnType>(
+  target: (this: This, ...args: Args) => ReturnType,
+  context: ClassMethodDecoratorContext<
+    This,
+    (this: This, ...args: Args) => ReturnType
+  >
+) {
+  return function (this: This, ...args: Args): ReturnType {
+    /// Логика
+    const res = target.call(this, ...args);
+    /// Логика
+    return res;
+  };
+}
